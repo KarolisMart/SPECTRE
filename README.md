@@ -11,11 +11,13 @@ conda env create -f environment.yml
 ## Code structure
 `full_gan.py` holds the main PyTorch Lightning model
 
-`model` holds individual generators, discriminators, and their internal components
+`model` folder holds individual generators, discriminators, and their internal components
 
 `test.py` tests the model. After training a model supply the appropriate checkpoint to this script. It also accepts `--EMD` flag to compute the MMDs using earth movers distance following GraphRNN instead of the much faster Gaussian TV kernel used by GRAN.
 
-`data.py` holds all of the code required to build and load the datasets we used. Our generated synthetic datasets can be found in the `data` folder. If you use these datasets in your code, you can use code similar to the function below, to get matching splits:
+If orbital count MMD does not work (is always zero) you might need to recompile the `util/orca/orca` executable and when used on Linux make sure that the appropriate user has permission to execute it.
+
+`data.py` holds all of the code required to build and load the datasets we used. Our generated synthetic datasets can be found in the `data` folder. If you use these datasets in your code, you can use the function below, to get matching splits:
 ```
 def load_graphs(filename, data_dir='data'):
   adjs, eigvals, eigvecs, n_nodes, max_eigval, min_eigval, same_sample, n_max = torch.load(f'{data_dir}/{filename}.pt')
@@ -30,8 +32,6 @@ def load_graphs(filename, data_dir='data'):
 
   return train, val, test
 ```
-
-If orbital count MMD does not work (is always zero) you might need to recompile the `util/orca/orca` executable and when used on Linux make sure that the appropriate user has permission to execute it.
 
 ## Output files
 Tensorboard logs, hyperparameters used and model checkpoints are saved in the `logs` folder. Running `test.py` on a trained model creates a `test` subfolder for the run with six more folders, each of which holds generated graphs in a `generated_graphs.pt` file generated when conditioning on nothing, true eigenvalues or true eigenvalues or eigenvectors. This is repeated for the exponential moving average (EMA) model weights.
