@@ -1587,7 +1587,7 @@ class SPECTRE(pl.LightningModule):
                             measure_types =  ['mmd']
                         for measure_type in measure_types:
                             mmd_wavelet_eigvec = spectral_filter_stats(true_eigvecs, true_eigvals, fake_eigvecs, fake_eigvals, compute_emd=(measure_type=='emd'))
-                            self.log(f'validation_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_filter', mmd_wavelet_eigvec)
+                            self.log(f'validation_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_wavelet_eigvec', mmd_wavelet_eigvec)
 
                     self.log(f'validation_loss/mean_MMD_ratio', 0)
                     self.log(f'validation_loss/mean_recon_loss', 0)
@@ -1618,7 +1618,7 @@ class SPECTRE(pl.LightningModule):
                             measure_types =  ['mmd']
                         for measure_type in measure_types:
                             mmd_wavelet_eigvec = spectral_filter_stats(true_eigvecs, true_eigvals, fake_eigvecs, fake_eigvals, compute_emd=(measure_type=='emd'))
-                            self.log(f'validation_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_filter', mmd_wavelet_eigvec)
+                            self.log(f'validation_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_wavelet_eigvec', mmd_wavelet_eigvec)
 
                     self.log(f'validation_loss/mean_recon_loss', 0)
                     self.log(f'validation_loss/mean_normalized_recon_loss', 0)
@@ -1674,12 +1674,12 @@ class SPECTRE(pl.LightningModule):
                                 true_eigvecs = [g for x in outputs_i for g in x[f'{test_type}_true_eigvecs{model_type}']]
                                 fake_eigvecs = [g for x in outputs_i for g in x[f'{test_type}_fake_eigvecs{model_type}']] 
                                 mmd_wavelet_eigvec = spectral_filter_stats(true_eigvecs, true_eigvals, fake_eigvecs, fake_eigvals, compute_emd=(measure_type=='emd'))
-                                self.log(f'validation_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_filter', mmd_wavelet_eigvec)
+                                self.log(f'validation_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_wavelet_eigvec', mmd_wavelet_eigvec)
 
                                 true_graph_eigvals, true_graph_eigvecs = compute_list_eigh(true_graphs)
                                 fake_graph_eigvals, fake_graph_eigvecs = compute_list_eigh(fake_graphs)
                                 mmd_wavelet = spectral_filter_stats(true_graph_eigvecs, true_graph_eigvals, fake_graph_eigvecs, fake_graph_eigvals, compute_emd=(measure_type=='emd'))
-                                self.log(f'validation_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_filter_graph', mmd_wavelet)
+                                self.log(f'validation_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_wavelet', mmd_wavelet)
 
                             # Do graph validity tests
                             if 'lobster' in self.logger.log_dir:
@@ -2074,7 +2074,7 @@ class SPECTRE(pl.LightningModule):
                             measure_types =  ['mmd']
                         for measure_type in measure_types:
                             mmd_wavelet_eigvec = spectral_filter_stats(true_eigvecs, true_eigvals, fake_eigvecs, fake_eigvals, compute_emd=(measure_type=='emd'))
-                            self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_filter', mmd_wavelet_eigvec)
+                            self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_wavelet_eigvec', mmd_wavelet_eigvec)
                 elif self.hparams.lambda_SON_only:
                     test_types = ['all_fake', 'fake_eigvec']
                     for test_type in test_types:
@@ -2099,7 +2099,7 @@ class SPECTRE(pl.LightningModule):
                             measure_types =  ['mmd']
                         for measure_type in measure_types:
                             mmd_wavelet_eigvec = spectral_filter_stats(true_eigvecs, true_eigvals, fake_eigvecs, fake_eigvals, compute_emd=(measure_type=='emd'))
-                            self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_filter', mmd_wavelet_eigvec)
+                            self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_wavelet_eigvec', mmd_wavelet_eigvec)
                 else:
                     if self.hparams.adj_only:
                         test_types = ['fake_adj']
@@ -2161,12 +2161,12 @@ class SPECTRE(pl.LightningModule):
                                 self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_k', mmd_spectral_k)
 
                                 mmd_wavelet_eigvec = spectral_filter_stats(true_eigvecs, true_eigvals, fake_eigvecs, fake_eigvals, compute_emd=(measure_type=='emd'))
-                                self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_filter', mmd_wavelet_eigvec)
+                                self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_wavelet_eigvec', mmd_wavelet_eigvec)
 
                                 true_graph_eigvals, true_graph_eigvecs = compute_list_eigh(true_graphs)
                                 fake_graph_eigvals, fake_graph_eigvecs = compute_list_eigh(fake_graphs)
                                 mmd_wavelet = spectral_filter_stats(true_graph_eigvecs, true_graph_eigvals, fake_graph_eigvecs, fake_graph_eigvals, compute_emd=(measure_type=='emd'))
-                                self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_spectral_filter_graph', mmd_wavelet)
+                                self.log(f'test_loss_{test_type}{cond_data_sufix}{model_type}/{measure_type}_wavelet', mmd_wavelet)
 
                             # Do graph validity tests
                             if 'lobster' in self.logger.log_dir:

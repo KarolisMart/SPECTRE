@@ -919,8 +919,8 @@ class GraphDataModule(pl.LightningDataModule):
             mmd_eigval = eigval_stats(val_eigvals, train_eigvals, max_eig=self.max_k_eigval, compute_emd=(metric_type=='EMD'))
             true_graph_eigvals, true_graph_eigvecs = compute_list_eigh(val_graphs)
             fake_graph_eigvals, fake_graph_eigvecs = compute_list_eigh(train_graphs)
-            self.train_mmd_spectral_filter_graph = spectral_filter_stats(true_graph_eigvecs, true_graph_eigvals, fake_graph_eigvecs, fake_graph_eigvals, compute_emd=(metric_type=='EMD'))
-            print(f'{metric_type} measures of Training set vs Validation set: degree {self.train_mmd_degree}, 4orbits {self.train_mmd_4orbits}, clustering {self.train_mmd_clustering}, spectral {self.train_mmd_spectral}, mmd_eigval {mmd_eigval}, mmd_spectral_filter_graph {self.train_mmd_spectral_filter_graph}')
+            self.train_mmd_wavelet = spectral_filter_stats(true_graph_eigvecs, true_graph_eigvals, fake_graph_eigvecs, fake_graph_eigvals, compute_emd=(metric_type=='EMD'))
+            print(f'{metric_type} measures of Training set vs Validation set: degree {self.train_mmd_degree}, 4orbits {self.train_mmd_4orbits}, clustering {self.train_mmd_clustering}, spectral {self.train_mmd_spectral}, mmd_eigval {mmd_eigval}, mmd_wavelet {self.train_mmd_wavelet}')
 
     def train_dataloader(self):
         return DataLoader(self.train, batch_size=self.batch_size, shuffle=True, num_workers=self.n_data_workers, pin_memory=False)
